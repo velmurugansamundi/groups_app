@@ -29,7 +29,7 @@ RSpec.shared_examples "calling update_groups_info method" do |parameter1, parame
   end
 end
 
-RSpec.describe GroupdManager  do
+RSpec.describe GroupManager  do
 
   describe '.create_group_with_users' do
     # Calling the Shared Examples
