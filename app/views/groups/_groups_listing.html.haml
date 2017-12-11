@@ -1,0 +1,19 @@
+.box-header.with-border
+  %h4.box-title Groups Listing
+
+.box-body
+  - if groups
+    %table.table.table-bordered
+      %tr
+        %th Group Name
+        %th Description
+        %th{:style => "width: 40px"} Actions
+      - groups.each do |group|
+        %tr
+          %td #{group.try(:name)}
+          %td #{group.try(:description)}
+          %td
+            .row
+              = link_to "View", group_path(group)
+  - else
+    No Groups Found

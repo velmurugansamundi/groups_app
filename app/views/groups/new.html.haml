@@ -1,0 +1,16 @@
+-#= stylesheet_link_tag  "bootstrap-tagsinput.css"
+-#= javascript_include_tag  "bootstrap-tagsinput.min.js"
+
+%section.content-header
+  %h1
+    Add Group
+  %ol.breadcrumb
+    %li
+      %a{:href => groups_path}
+        %i.fa.fa-dashboard
+        Groups
+    %li.active Add Group
+%section.content
+  = render partial: '/groups/form'
+
+-#= javascript_include_tag 'groups'

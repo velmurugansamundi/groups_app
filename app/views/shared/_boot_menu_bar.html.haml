@@ -1,0 +1,38 @@
+.wrapper
+  %header.main-header
+    %a.logo{:href => "/"}
+      %span.logo-mini{style: "font-size: 14px;"}
+        %b>
+        Groups
+      %span.logo-lg
+        %b> Groups
+    %nav.navbar.navbar-static-top
+      %a.sidebar-toggle{"data-toggle" => "offcanvas", :href => "#", :role => "button"}
+        %span.sr-only Toggle navigation
+      .navbar-custom-menu
+        %ul.nav.navbar-nav
+          = render partial: '/shared/user_profile_info_section', locals:{user: user}
+  %aside.main-sidebar
+    %section.sidebar
+      .user-panel
+        .pull-left.image
+          = image_tag "/assets/placeholder-img.jpg",:size=>"50x50", :class=>"img-circle"
+        .pull-left.info
+          %p Vel Murugan
+          %a{:href => "/"}
+            %i.fa.fa-circle.text-success
+            ONLINE
+    = render partial: '/shared/boot_sidebar_menu'
+  .content-wrapper
+    = yield
+  %footer.main-footer
+    .pull-right.hidden-xs
+      %b Version
+      1.0.0
+    %strong
+      Copyright © 2017-2018
+      = succeed "." do
+        %a{:href => ""} Vel Murugan
+    All rights
+    reserved.
+

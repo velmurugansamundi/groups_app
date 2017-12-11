@@ -1,0 +1,23 @@
+%a.btn.bg-maroon.margin.pull-right{:href => new_group_path, :title => "Add Group" } Add Group
+%section.content
+  .row
+    .col-xs-12
+      .box
+        =render partial: "/shared/box_header", locals: {:@title => "Groups"}
+        .box-body
+          .row
+            .col-md-12
+            .col-md-12
+              \&nbsp;
+            .col-md-12
+              #paginator.pull-right{:style=> "margin-top: -24px;"}
+                = will_paginate @results,  inner_window: 2, outer_window: 1, :container => " <ul> ", :class=> "pagination pagination-sm no-margin pull-right"
+          .search_results_container#groups_grid_view
+            .results_view{:display_type => "section", :page=> "group_chat" }
+              - if @results.present?
+                = render partial: "/shared/box_group_info_container", locals: {:@results => @results }
+              - else
+                .col-lg-3.col-xs-6
+                  #{t :no_groups_records}
+-#= javascript_include_tag 'groups'
+

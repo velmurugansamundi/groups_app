@@ -1,0 +1,73 @@
+.row
+  .col-md-12
+    .box.box-primary
+      = form_for @group , {html: {class: "group_info_form basic_info_form"}} do |f|
+        .box-body
+          - if @group.errors.present?
+            #error_explanation
+              %h2
+                = pluralize(@group.errors.count, "error")
+                prohibited this user from being saved:
+              %ul
+                - @group.errors.full_messages.each do |msg|
+                  %li
+                    * #{msg}
+          .col-md-6
+            .form-group
+              %label{:for => "exampleInputEmail1"}
+                Name
+                %span{style: "color:red;"} *
+              - if @group.persisted?
+                = f.hidden_field :id, value: @group.id
+              = f.text_field :name, value: @group.name, :class => "form-control",:placeholder => "Enter Group Name...", required: true
+            .form-group
+              %label{:for => "exampleInputPassword1"}
+                Description
+              = f.text_area(:description, cols: 60, rows: 5,placeholder:"Description" )
+            - unless params[:action] == "edit"
+              .form-group
+                %label{:for => "exampleInputPassword1"}
+                  Role(Select a role and add Members)
+                = select_tag 'role_id', options_for_select(Role.all.collect{ |u| [u.name, u.id] }), {:class=> "form-control choose_filter",:style => "width: 100%;", :prompt=> "Select Role"}
+              .form-group
+                = f.label :user_ids, "Added Members"
+                %br
+                = select_tag 'user_ids[]', options_for_select(User.all.collect{ |u| [u.name, u.id] }), {:class=> "form-control choose_filter",:style => "width: 100%;", :multiple => true}
+            - users_data = group_users_by_roles(@group)
+            - if users_data.present?
+              - users_data.compact.each do |key, value|
+                - value && value.each do |record|
+                  - data = {user_id: record.user_id, role_id: record.role_id}
+                  -#-user = record.user
+                  .form-group.added_users{:identifier=> "#{record.user_id}_#{record.role_id}"}
+                    = f.fields_for :user_info_data, OpenStruct.new(data), index: "" do |interface_form|
+                      = interface_form.hidden_field :user_id, :value => "#{record.user_id}"
+                      = interface_form.hidden_field :role_id, :value => "#{record.role_id}"
+                      = interface_form.hidden_field :group_operation, :value => "ADD"
+            .form-group.add_user_clone_section{:style=> "display: none;"}
+              = f.fields_for :user_info_data, OpenStruct.new(), index: "" do |interface_form|
+                = interface_form.hidden_field :user_id
+                = interface_form.hidden_field :role_id
+                = interface_form.hidden_field :group_operation, :value => "ADD"
+
+            .panel.box
+              - users_data.each do |key, value|
+                .box-header.group_header_text{:identifier=> "#{key}"}
+                  %p
+                    %a.collapsed{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseOne_#{@group.id}"}
+                      #{key}
+                  - value && value.each do |record|
+                    -user = record.user
+                    .user-panel.user-panel_info{:id=> "user_panel_#{user.id}", :user_id=> "#{user.id}", :user_role_info => "#{record.user_id}_#{record.role_id}"}
+                      .pull-left.image
+                        %input{:checked => "true", :type => "checkbox",:class=> "user_selection"}
+                          %img.img-circle{:alt => "User Image", :src => "/assets/placeholder-img.jpg"}/
+                          %a{:href => "#"}
+                            %i.fa.fa-circle.text-primary
+                            #{user.name}
+            - unless params[:action] == "edit"
+              %a.btn.btn-primary.add_members_to_group Add Members to Group
+            .form-group.form_btn_section.form_actions_btn_group.basic_info_form_btns
+              .pull-right
+                %button.btn.btn-primary{:type => "reset"} Cancel
+                %button.btn.btn-primary.save_group_btn{:type => "submit"} Save

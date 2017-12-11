@@ -1,0 +1,41 @@
+.box.box-warning
+  .box-header.with-border
+    .pull-right.box-tools
+      %a.btn.btn-sm.refresh-btn.group_show{:href => group_path(group), :title => "View Group" }
+        %i.fa.fa-eye
+      %a.btn.btn-sm.refresh-btn.group_edit{:href => edit_group_path(group), :title => "Edit Group" }
+        %i.fa.fa-edit
+    %i.fa.fa-user
+    %h3.box-title.box-accordian-header{:rel => "tooltip", :title => "#{group.name}"} #{group.name.length > 26 ? group.name[0..26].concat("..") : group.name }
+
+  .box-body
+    .row
+      .col-sm-12
+        .pad
+          .clearfix
+            %span.pull-left Description
+            %span.pull-right #{group.description}
+          .clearfix
+            %span.pull-left Created at
+            %span.pull-right #{group_created_data(group)}
+          .clearfix
+            %span.pull-left Last Used
+            %span.pull-right #{distance_of_time_in_words_to_now(group.updated_at)} ago
+    -#.box-footer
+      .row
+        .col-md-12
+          #accordion.box-group
+            .panel.box
+              .box-header
+                %p
+                  %a.collapsed{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseOne_#{group.id}"}
+                    Group Members
+              - group.group_users.each do |group_user|
+                - user = group_user.user
+                .user-panel.user-panel_info{:id=> "user_panel_#{user.id}", :user_id=> "#{user.id}"}
+                  .pull-left.image
+                    -#%input{:checked => "true", :type => "checkbox",:class=> "user_selection"}
+                    %img.img-circle{:alt => "User Image", :src => "/assets/placeholder-img.jpg"}/
+                    %a{:href => "#"}
+                      %i.fa.fa-circle.text-primary
+                      #{user.name}

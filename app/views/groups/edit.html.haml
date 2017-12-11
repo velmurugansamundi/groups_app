@@ -1,0 +1,11 @@
+%section.content-header
+  %h1
+    Edit Group
+  %ol.breadcrumb
+    %li
+      %a{:href => groups_path}
+        %i.fa.fa-dashboard
+        Groups
+    %li.active Edit Group
+%section.content
+  = render partial: '/groups/form'

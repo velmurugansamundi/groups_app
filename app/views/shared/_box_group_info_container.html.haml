@@ -1,0 +1,6 @@
+- @groups.in_groups_of(3).each do |result|
+  .row
+    - result.each do |group|
+      - if group
+        .col-md-4{:id=> "group_accordian_#{group.id}"}
+          =render partial: "/shared/box_group_accordion", locals: {:group => group}

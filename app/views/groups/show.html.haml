@@ -1,0 +1,37 @@
+.row
+  .col-xs-6
+    .box.box-warning
+      .box-header.with-border
+        %i.fa.fa-user
+        %h3.box-title.box-accordian-header{:rel => "tooltip", :title => "#{@group.name}"} #{@group.name.length > 26 ? @group.name[0..26].concat("..") : @group.name }
+      .box-body
+        .row
+          .col-sm-12
+            .pad
+              .clearfix
+                %span.pull-left Description
+                %span.pull-right #{@group.description}
+              .clearfix
+                %span.pull-left Created at
+                %span.pull-right #{group_created_data(@group)}
+              .clearfix
+                %span.pull-left Last Used
+                %span.pull-right #{distance_of_time_in_words_to_now(@group.updated_at)} ago
+        .box-footer
+          .row
+            .col-md-12
+              #accordion.box-group
+                .panel.box
+                  - group_users_by_roles(@group).each do |key, value|
+                    .box-header.group_header_text{:identifier=> "#{key}"}
+                      %p
+                        %a.collapsed{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#collapseOne_#{@group.id}"}
+                          #{key}
+                      - value && value.each do |record|
+                        -user = record.user
+                        .user-panel.user-panel_info{:id=> "user_panel_#{user.id}", :user_id=> "#{user.id}"}
+                          .pull-left.image
+                            %img.img-circle{:alt => "User Image", :src => "/assets/placeholder-img.jpg"}/
+                            %a{:href => "#"}
+                              %i.fa.fa-circle.text-primary
+                              #{user.name}
