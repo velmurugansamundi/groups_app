@@ -1,8 +1,5 @@
 $(function(){
 
-
-
-
     $(document).on("click", "#role_id", function(){
         $("#user_ids_").val("");
     });
